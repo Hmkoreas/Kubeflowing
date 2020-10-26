@@ -1,0 +1,11 @@
+.block-editor-inner-blocks.has-overlay {
+	&::after {
+		content: "";
+		position: absolute;
+		top: -$block-padding;
+		right: -$block-padding;
+		bottom: -$block-padding;
+		left: -$block-padding;
+		z-index: z-index(".block-editor-inner-blocks.has-overlay::after");
+	}
+}
