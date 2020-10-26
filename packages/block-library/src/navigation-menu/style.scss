@@ -1,0 +1,147 @@
+.wp-block-navigation-menu {
+
+	& > ul {
+		display: block;
+		list-style: none;
+		margin: 0;
+		max-width: none;
+		padding-left: 0;
+		position: relative;
+
+		@include break-small {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		ul {
+			padding-left: 0;
+		}
+
+		li {
+			position: relative;
+			z-index: 1;
+
+			&:hover,
+			&:focus-within {
+				cursor: pointer;
+				z-index: 99999;
+			}
+
+			// Submenu Display
+			&:hover > ul,
+			&:focus-within > ul,
+			& ul:hover,
+			& ul:focus {
+				visibility: visible;
+				opacity: 1;
+				display: block;
+			}
+		}
+
+		& > li {
+
+			& > a {
+				padding-left: 0;
+				text-decoration: none;
+
+				@include break-small {
+					padding-left: 16px;
+				}
+			}
+
+			& > a:hover {
+				padding-left: 0;
+				text-decoration: underline;
+
+				@include break-small {
+					padding-left: 16px;
+				}
+			}
+
+			&:first-of-type > a {
+				padding-left: 0;
+			}
+
+			&:last-of-type > a {
+				padding-right: 0;
+			}
+		}
+
+		// Sub-menus Flyout
+		& > li > ul {
+			background: #000;
+			border-radius: 0.4rem;
+			left: 0;
+			margin: 0;
+			min-width: max-content;
+			opacity: 0;
+			position: absolute;
+			top: calc(100% + 1rem);
+			transition: opacity 0.15s linear, transform 0.15s linear, right 0s 0.15s;
+			transform: translateY(0.6rem);
+			visibility: hidden;
+
+			&::before {
+				border: solid transparent;
+				border-color: rgba(0, 0, 0, 0);
+				border-bottom-color: #000;
+				border-width: 10px;
+				bottom: 100%;
+				content: " ";
+				height: 0;
+				left: 20%;
+				margin-left: -10px;
+				width: 0;
+				position: absolute;
+				pointer-events: none;
+			}
+
+			li {
+				margin: 0;
+			}
+
+			ul {
+				width: 100%;
+
+				li {
+					margin: 0.5rem 0 0 2rem;
+				}
+			}
+		}
+	}
+
+	// Menu Link
+	a {
+		display: block;
+		padding: 16px;
+	}
+
+	// Sub-menu depth indicators
+	ul ul {
+
+		list-style: none;
+		margin-left: 0;
+		// Reset the counter for each UL
+		counter-reset: nested-list;
+
+		li a {
+
+			padding-top: 8px;
+			padding-bottom: 8px;
+
+		}
+	}
+
+	// Top-level sub-menu indicators
+	& .has-sub-menu > a {
+
+		&::after {
+			content: "\00a0\25BC";
+			display: inline-block;
+			font-size: 0.6rem;
+			height: inherit;
+			width: inherit;
+		}
+	}
+
+}
