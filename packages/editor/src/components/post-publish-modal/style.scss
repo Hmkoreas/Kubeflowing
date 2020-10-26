@@ -1,0 +1,84 @@
+.editor-post-publish-modal {
+	min-width: 600px;
+	width: 35vw;
+}
+
+/* Override default modal styles */
+.editor-post-publish-modal .components-modal__header {
+	border-bottom: none;
+	margin-bottom: 12px;
+}
+
+.editor-post-publish-modal .components-modal__header .components-modal__header-heading {
+	font-weight: 400;
+	font-size: 23px;
+	line-height: 18px;
+	text-align: center;
+	letter-spacing: -0.5px;
+}
+
+.editor-post-publish-modal-panel {
+	padding: 16px 0;
+}
+
+.editor-post-publish-modal-panel__heading {
+	font-size: 13px;
+	line-height: 18px;
+	letter-spacing: -0.006px;
+	color: $dark-gray-300;
+	font-weight: 400;
+}
+
+.editor-post-publish-modal-panel__value {
+	font-size: 21px;
+	line-height: 18px;
+	letter-spacing: -0.006px;
+	color: $dark-gray-800;
+	margin: 4px 0;
+}
+
+.editor-post-publish-modal-panel__detail {
+	font-size: 13px;
+	line-height: 18px;
+	letter-spacing: -0.006px;
+	color: $dark-gray-800;
+	clear: both;
+}
+
+/* Pre-publish Modal Styles */
+.editor-post-publish-modal__prepublish-controls {
+	text-align: right;
+	padding: 24px 0 0;
+}
+
+.editor-post-publish-modal__prepublish-controls .editor-post-publish-modal__prepublish-cancel-button,
+.editor-post-publish-modal__prepublish-controls .editor-post-publish-modal__prepublish-publish-button {
+	padding: 0 24px 2px;
+}
+
+/* Publishing Modal Styles */
+.editor-post-publish-modal__publishing-animation {
+	display: flex;
+	justify-content: center;
+}
+
+/* Post Publish Modal Styles */
+.editor-post-publish-modal__postpublish-post-address {
+	display: flex;
+	align-items: flex-end;
+	padding: 12px 0;
+}
+
+.editor-post-publish-modal__postpublish-post-url {
+	flex: auto;
+	padding-right: 8px;
+}
+
+.editor-post-publish-modal__postpublish-post-copy {
+	margin-bottom: 9px;
+}
+
+.editor-post-publish-modal__postpublish-controls {
+	text-align: right;
+	padding: 24px 0 0;
+}
