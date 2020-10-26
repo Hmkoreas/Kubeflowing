@@ -1,0 +1,25 @@
+.components-base-control {
+	font-family: $default-font;
+	font-size: $default-font-size;
+
+	.components-base-control__field {
+		margin-bottom: $grid-size-small;
+
+		.components-panel__row & {
+			margin-bottom: inherit;
+		}
+	}
+
+	.components-base-control__label {
+		display: inline-block;
+		margin-bottom: $grid-size-small;
+	}
+
+	.components-base-control__help {
+		@include text-caption;
+	}
+}
+
+.components-base-control + .components-base-control {
+	margin-bottom: $grid-size-large;
+}
