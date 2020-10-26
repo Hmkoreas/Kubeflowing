@@ -1,0 +1,9 @@
+@mixin loading-fade-animation {
+	animation: loading-fade-animation 1.6s ease-in-out infinite;
+}
+
+@mixin fade-in-animation($speed: 0.2s, $delay: 0s) {
+	animation: fade-in-animation $speed ease-out $delay;
+	animation-fill-mode: forwards;
+	@include reduce-motion("animation");
+}

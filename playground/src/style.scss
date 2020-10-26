@@ -1,0 +1,65 @@
+@import "../../assets/stylesheets/colors";
+@import "../../assets/stylesheets/variables";
+@import "../../assets/stylesheets/mixins";
+@import "../../assets/stylesheets/breakpoints";
+@import "../../assets/stylesheets/animations";
+@import "../../assets/stylesheets/z-index";
+
+@import "./reset";
+@import "./editor-styles";
+
+
+.playground__header {
+	padding: 20px;
+	border-bottom: 1px solid #ddd;
+}
+
+.playground__logo {
+	font-size: 20px;
+	font-weight: 300;
+}
+
+.playground__body {
+	padding-top: 20px;
+
+	img {
+		max-width: 100%;
+		height: auto;
+	}
+
+	iframe {
+		width: 100%;
+	}
+
+	.components-navigate-regions {
+		height: 100%;
+	}
+}
+
+/**
+ * Animations
+ */
+
+// These keyframes should not be part of the _animations.scss mixins file.
+// That file is loaded in every stylesheet, which would create many duplicated declarations of these keyframes.
+// Instead, we're declaring them separately here.
+@keyframes loading-fade-animation {
+	0% {
+		opacity: 0.5;
+	}
+	50% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0.5;
+	}
+}
+
+@keyframes fade-in-animation {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
