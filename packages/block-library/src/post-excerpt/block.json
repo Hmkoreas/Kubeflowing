@@ -1,0 +1,33 @@
+{
+	"name": "core/post-excerpt",
+	"category": "design",
+	"attributes": {
+		"textAlign": {
+			"type": "string"
+		},
+		"wordCount": {
+			"type": "number",
+			"default": 55
+		},
+		"moreText": {
+			"type": "string"
+		},
+		"showMoreOnNewLine": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"usesContext": [
+		"postId",
+		"postType"
+	],
+	"supports": {
+		"html": false,
+		"__experimentalFontSize": true,
+		"__experimentalColor": {
+			"gradients": true,
+			"linkColor": true
+		},
+		"__experimentalLineHeight": true
+	}
+}
