@@ -1,0 +1,152 @@
+.block-editor-block-list__block[data-type="core/table"] {
+	&[data-align="left"],
+	&[data-align="right"],
+	&[data-align="center"] {
+		// Stop table block from collapsing when tables are floated.
+		height: auto;
+
+		table {
+			// Ensure the table element is not full-width when aligned.
+			width: auto;
+		}
+		td,
+		th {
+			word-break: break-all;
+		}
+	}
+
+	&[data-align="center"] {
+		text-align: initial;
+
+		table {
+			margin: 0 auto;
+		}
+	}
+}
+
+
+.wp-block-table {
+	// Pad the container so that table/column/row selection buttons have adequate space.
+	margin: -8px 0 0 -8px;
+	padding: 30px 0 0 30px;
+	width: 100%;
+
+	table {
+		border-collapse: collapse;
+	}
+
+	td,
+	th {
+		position: relative;
+		padding: 0;
+		border: $border-width solid;
+
+		&.is-selected {
+			&::before {
+				content: "";
+				display: block;
+				position: absolute;
+				pointer-events: none;
+				top: -1px;
+				left: -1px;
+				right: -1px;
+				bottom: -1px;
+				border: 3px solid $blue-medium-500;
+			}
+		}
+
+		&.is-multi-cell-selection {
+			&::before {
+				border-width: 1px;
+			}
+
+			&.is-selection-top-edge {
+				&::before {
+					border-top-width: 3px;
+				}
+			}
+
+			&.is-selection-right-edge {
+				&::before {
+					border-right-width: 3px;
+				}
+			}
+
+			&.is-selection-bottom-edge {
+				&::before {
+					border-bottom-width: 3px;
+				}
+			}
+
+			&.is-selection-left-edge {
+				&::before {
+					border-left-width: 3px;
+				}
+			}
+		}
+
+	}
+
+	&__cell-content {
+		padding: 0.5em;
+	}
+
+	// Extra specificity to override default Placeholder styles.
+	&__placeholder-form.wp-block-table__placeholder-form {
+		text-align: left;
+		align-items: center;
+	}
+
+	&__placeholder-input {
+		width: 100px;
+	}
+
+	&__placeholder-button {
+		min-width: 100px;
+		justify-content: center;
+	}
+
+	&__table-selection-button,
+	&__row-selection-button,
+	&__column-selection-button {
+		position: absolute;
+		border-radius: 0;
+
+		// Ensure the icon is centered, even when the button is very narrow.
+		padding: 0;
+		justify-content: center;
+
+		&.is-selected,
+		&.is-selected:not(:disabled):not([aria-disabled="true"]):not(.is-default):hover,
+		&.is-selected:focus,
+		&.is-selected:not(:disabled):not([aria-disabled="true"]):not(.is-default):active {
+			background: $blue-medium-500;
+			color: $white;
+		}
+
+		.dashicon {
+			margin: 0 auto;
+		}
+	}
+
+	&__table-selection-button {
+		top: -31px;
+		left: -31px;
+		width: 30px;
+		height: 30px;
+	}
+
+	&__row-selection-button {
+		top: 0;
+		left: -31px;
+		width: 30px;
+		height: 100%;
+	}
+
+	&__column-selection-button {
+		top: -31px;
+		left: 0;
+		width: 100%;
+		height: 30px;
+	}
+}
