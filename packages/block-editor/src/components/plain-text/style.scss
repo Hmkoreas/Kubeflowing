@@ -1,0 +1,38 @@
+.block-editor .block-editor-plain-text {
+	box-shadow: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	line-height: inherit;
+	border: none;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+
+	&:focus {
+		color: unset;
+	}
+
+	&:not(.is-stylable):focus {
+		color: $dark-gray-900;
+	}
+
+	&.is-stylable {
+		border-radius: 0;
+		display: block;
+
+		&:not(.has-background) {
+			background-color: transparent;
+		}
+
+		&.has-background {
+			padding: $block-bg-padding--v $block-bg-padding--h;
+		}
+
+		&:focus {
+			border: none;
+			box-shadow: none;
+			outline: none;
+		}
+	}
+}
