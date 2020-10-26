@@ -1,0 +1,199 @@
+/**
+ * External dependencies
+ */
+import classnames from 'classnames';
+
+/**
+ * WordPress dependencies
+ */
+import {
+	useMemo,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+} from '@wordpress/element';
+import {
+	InnerBlocks,
+	InspectorControls,
+	BlockControls,
+	withColors,
+} from '@wordpress/block-editor';
+import { withSelect } from '@wordpress/data';
+import {
+	CheckboxControl,
+	PanelBody,
+	Spinner,
+	Toolbar,
+} from '@wordpress/components';
+import { compose } from '@wordpress/compose';
+
+import { __ } from '@wordpress/i18n';
+
+/**
+ * Internal dependencies
+ */
+import useBlockNavigator from './use-block-navigator';
+import BlockNavigationList from './block-navigation-list';
+import BlockColorsStyleSelector from './block-colors-selector';
+
+function NavigationMenu( {
+	attributes,
+	clientId,
+	pages,
+	isRequesting,
+	backgroundColor,
+	textColor,
+	setBackgroundColor,
+	setTextColor,
+	setAttributes,
+} ) {
+	const scrollContainerRef = useRef();
+	const [ hasScrollX, setHasScrollX ] = useState( false );
+	const clientWidth = scrollContainerRef.current ? scrollContainerRef.current.clientWidth : 0;
+	const scrollWidth = scrollContainerRef.current ? scrollContainerRef.current.scrollWidth : 0;
+
+	useLayoutEffect( () => {
+		if ( scrollWidth > clientWidth ) {
+			setHasScrollX( true );
+		} else {
+			setHasScrollX( false );
+		}
+	}, [ clientWidth, scrollWidth ] );
+
+	const { navigatorToolbarButton, navigatorModal } = useBlockNavigator( clientId );
+	const defaultMenuItems = useMemo(
+		() => {
+			if ( ! pages ) {
+				return null;
+			}
+
+			return pages.map( ( { title, type, link: url, id: linkId } ) => (
+				[ 'core/navigation-menu-item', {
+					label: title.rendered,
+					title: title.raw,
+					type,
+					linkId,
+					url,
+					opensInNewTab: false,
+				} ]
+			) );
+		},
+		[ pages ]
+	);
+
+	const navigationMenuInlineStyles = {};
+	if ( textColor ) {
+		navigationMenuInlineStyles.color = textColor.color;
+	}
+
+	if ( backgroundColor ) {
+		navigationMenuInlineStyles.backgroundColor = backgroundColor.color;
+	}
+
+	const navigationMenuClasses = classnames(
+		'wp-block-navigation-menu', {
+			'has-text-color': textColor.color,
+			'has-background-color': backgroundColor.color,
+			'has-scroll-x': hasScrollX,
+			[ attributes.backgroundColorCSSClass ]: attributes && attributes.backgroundColorCSSClass,
+			[ attributes.textColorCSSClass ]: attributes && attributes.textColorCSSClass,
+		}
+	);
+
+	/**
+	 * Set the color type according to the given values.
+	 * It propagate the color values into the attributes object.
+	 * Both `backgroundColorValue` and `textColorValue` are
+	 * using the inline styles.
+	 *
+	 * @param {Object}  colorsData       Arguments passed by BlockColorsStyleSelector onColorChange.
+	 * @param {string}  colorsData.attr  Color attribute.
+	 * @param {boolean} colorsData.value Color attribute value.
+	 */
+	const setColorType = ( { attr, value } ) => {
+		switch ( attr ) {
+			case 'backgroundColor':
+				setBackgroundColor( value );
+				setAttributes( { backgroundColorValue: value } );
+				break;
+
+			case 'textColor':
+				setTextColor( value );
+				setAttributes( { textColorValue: value } );
+				break;
+		}
+	};
+
+	useEffect( () => {
+		// Set/Unset colors CSS classes.
+		setAttributes( {
+			backgroundColorCSSClass: backgroundColor.class ? backgroundColor.class : null,
+			textColorCSSClass: textColor.class ? textColor.class : null,
+		} );
+	}, [ backgroundColor.class, textColor.class ] );
+
+	return (
+		<>
+			<BlockControls>
+				<Toolbar>
+					{ navigatorToolbarButton }
+				</Toolbar>
+				<BlockColorsStyleSelector
+					backgroundColor={ backgroundColor }
+					textColor={ textColor }
+					onColorChange={ setColorType }
+				/>
+			</BlockControls>
+			{ navigatorModal }
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Menu Settings' ) }
+				>
+					<CheckboxControl
+						value={ attributes.automaticallyAdd }
+						onChange={ ( automaticallyAdd ) => setAttributes( { automaticallyAdd } ) }
+						label={ __( 'Automatically add new pages' ) }
+						help={ __( 'Automatically add new top level pages to this menu.' ) }
+					/>
+				</PanelBody>
+				<PanelBody
+					title={ __( 'Navigation Structure' ) }
+				>
+					<BlockNavigationList clientId={ clientId } />
+				</PanelBody>
+			</InspectorControls>
+
+			<div className={ navigationMenuClasses } style={ navigationMenuInlineStyles }>
+				<div ref={ scrollContainerRef } className="wp-block-navigation-menu__scroll-container">
+					{ isRequesting && <><Spinner /> { __( 'Loading Navigation…' ) } </> }
+					{ pages &&
+					<InnerBlocks
+						template={ defaultMenuItems ? defaultMenuItems : null }
+						allowedBlocks={ [ 'core/navigation-menu-item' ] }
+						templateInsertUpdatesSelection={ false }
+						__experimentalMoverDirection={ 'horizontal' }
+					/>
+					}
+				</div>
+			</div>
+		</>
+	);
+}
+
+export default compose( [
+	withColors( { backgroundColor: 'background-color', textColor: 'color' } ),
+	withSelect( ( select ) => {
+		const { getEntityRecords } = select( 'core' );
+		const { isResolving } = select( 'core/data' );
+		const filterDefaultPages = {
+			parent: 0,
+			order: 'asc',
+			orderby: 'id',
+		};
+		return {
+			pages: getEntityRecords( 'postType', 'page', filterDefaultPages ),
+			isRequesting: isResolving( 'core', 'getEntityRecords', [ 'postType', 'page', filterDefaultPages ] ),
+		};
+	} ),
+] )( NavigationMenu );
